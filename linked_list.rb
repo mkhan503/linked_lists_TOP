@@ -28,13 +28,11 @@ class LinkedList
       @head = node
     end
   end
-
+  
   def size
+    size = 0
     current = @head
-    return 0 if current.nil?
-
-    size = 1
-    until current.next_node.nil?
+    until current.nil?
       size += 1
       current = current.next_node
     end
@@ -66,10 +64,10 @@ class LinkedList
   end
 
   def contains?(value)
-    @head.value == value ? (return true) : current = @head
-    until current.next_node.nil?
-      current = current.next_node
+    current = @head
+    until current.nil?
       return true if current.value == value
+      current = current.next_node
     end
     false
   end
@@ -143,6 +141,7 @@ end
 list = LinkedList.new()
 5.times { list.append(Node.new(rand(2..20)))}
 puts list.to_s
-list.head.to_s
-p list.find(4)
+puts list.head.to_s
+p list.contains?(4)
 p list.find_recursive(5)
+p list.size
