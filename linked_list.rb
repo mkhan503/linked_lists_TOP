@@ -1,24 +1,26 @@
+# LinkedList class with methods
 class LinkedList
-#change starting index number to 0 instead of one
+  attr_accessor :head, :tail
+
+  # change starting index number to 0 instead of one
   def initialize
     @head = nil
     @tail = nil
   end
 
   def append(node)
-    if @head == nil
-      #nodes assigned to head and tail. 
+    if @head.nil?
+      # nodes assigned to head and tail. 
       @head = node
-      @tail = node
     else
       # @tail is the previous node
       @tail.next_node = node
-      @tail = node
     end
+    @tail = node
   end
 
   def prepend(node)
-    if @head == nil
+    if @head.nil?
       @head = node
       @tail = node
     else
@@ -29,28 +31,21 @@ class LinkedList
 
   def size
     current = @head
-    return 0 if current == nil
+    return 0 if current.nil?
 
     size = 1
-    while !current.next_node.nil?
+    until current.next_node.nil?
       size += 1
       current = current.next_node
     end
     size
   end
-# needa work
-  def head
-    @head
-  end
-
-  def tail 
-    @tail
-  end
 
   def at(index)
     current = @head
     return 'Empty List' if current.nil?
-    # since current is already at head i.e. index 0
+
+    # current is already at head i.e. index 0
     index.times { current = current.next_node }
     current
   end
@@ -72,20 +67,27 @@ class LinkedList
 
   def contains?(value)
     @head.value == value ? (return true) : current = @head
-    while !current.next_node.nil?
+    until current.next_node.nil?
       current = current.next_node
       return true if current.value == value
     end
     false
   end
 
-  def find(value) 
+  def find_recursive(value, index = 0, current = @head)
+    return nil if current.nil?
+    return index if @head.value == value
+
+    find_recursive(value, index + 1, current.next_node)
+  end
+
+  def find(value)
     # returns index of found value
     index = 0
     return index if @head.value == value
 
     current = @head
-    while !current.next_node.nil?
+    until current.next_node.nil?
       index += 1
       current = current.next_node
       return index if current.value == value
@@ -97,19 +99,16 @@ class LinkedList
     return nil if @head.nil? 
 
     current = @head
-    output = "#{current.value}" # TODO check how not to overwrite methods to use to_s
-
-    while !current.next_node.nil?
+    output = "#{current.value}" 
+    until current.next_node.nil?
       current = current.next_node
       output << " -> #{current.value}"
     end
-
     output << ' -> nil'
   end
 
   def insert_at(value, index)
     return puts 'Invalid index number' if index > self.size
-
     insert_node = Node.new(value)
     return self.prepend(insert_node) if index.zero?
 
@@ -131,6 +130,7 @@ class LinkedList
   end
 end
 
+# Create node class
 class Node
   attr_accessor :next_node, :value
 
@@ -139,3 +139,10 @@ class Node
     @next_node = next_node
   end
 end
+
+list = LinkedList.new()
+5.times { list.append(Node.new(rand(2..20)))}
+puts list.to_s
+list.head.to_s
+p list.find(4)
+p list.find_recursive(5)
