@@ -51,7 +51,7 @@ class LinkedList
   def pop
     # set the second last node's value to nil, and @tail to second_last node
     current = @head
-    (self.size - 2).times { current = current.next_node }
+    (size - 2).times { current = current.next_node }
     @tail = current
     current.next_node = nil
   end
@@ -106,9 +106,9 @@ class LinkedList
   end
 
   def insert_at(value, index)
-    return puts 'Invalid index number' if index > self.size
+    return puts 'Invalid index number' if index > size
     insert_node = Node.new(value)
-    return self.prepend(insert_node) if index.zero?
+    return prepend(insert_node) if index.zero?
 
     current = @head
     (index - 1).times { current = current.next_node }
@@ -117,7 +117,7 @@ class LinkedList
   end
 
   def remove_at(index)
-    return puts 'Invalid index number' if self.size < index
+    return puts 'Invalid index number' if size < index
 
     current = @head
     return @head = @head.next_node if index.zero?
@@ -140,6 +140,9 @@ end
 
 list = LinkedList.new()
 5.times { list.append(Node.new(rand(2..20)))}
+puts list 
+list.insert_at(4,0)
+puts list
 puts list.to_s
 puts list.head.to_s
 p list.contains?(4)
